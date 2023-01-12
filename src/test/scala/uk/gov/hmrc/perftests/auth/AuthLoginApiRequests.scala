@@ -1,6 +1,17 @@
 /*
  * Copyright 2023 HM Revenue & Customs
  *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package uk.gov.hmrc.perftests.auth
@@ -9,26 +20,27 @@ import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
 import org.joda.time.DateTime
+import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.Common._
 import uk.gov.hmrc.perftests.RandomDataGenerator._
 
-object AuthLoginApiRequests {
+object AuthLoginApiRequests extends ServicesConfiguration {
 
   val baseUrlAuthLoginApi: String = baseUrlFor("auth-login-api")
   val authLoginApiUrl: String = s"$baseUrlAuthLoginApi/government-gateway/session/login"
 
-  val insertAuthRecord: ChainBuilder = exec(http("Insert Auth Record")
+  val insertAuthRecordOrganisation: ChainBuilder = exec(http("Insert Auth Record Organisation")
     .post(authLoginApiUrl)
     .body(StringBody(authPayload(Organisation)))
     .headers(Map("Content-Type" -> "application/json"))
-    .check(status.is(201))
+    .check(status is 201)
     .check(header("Authorization").saveAs("bearerToken")))
 
-  val insertAuthRecordAgent: ChainBuilder = exec(http("Insert Auth Record Agent")
+  val insertAuthRecordAgent: ChainBuilder = exec(http ("Insert Auth Record Agent")
     .post(authLoginApiUrl)
     .body(StringBody(authPayload(Agent)))
     .headers(Map("Content-Type" -> "application/json"))
-    .check(status.is(201))
+    .check(status is 201)
     .check(header("Authorization").saveAs("bearerToken")))
 
   def authPayload(affinityGroup: String): String = {
