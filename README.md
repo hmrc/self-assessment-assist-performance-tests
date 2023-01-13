@@ -2,7 +2,7 @@
 
 # self-assessment-assist-performance-tests
 
-Performance test suite for the `<digital service name>`, using [performance-test-runner](https://github.com/hmrc/performance-test-runner) under the hood.
+Performance test suite for the `SELF-ASSESSEMENT-ASSIST`, using [performance-test-runner](https://github.com/hmrc/performance-test-runner) under the hood.
 
 ## Pre-requisites
 
@@ -17,7 +17,7 @@ docker run --rm -d --name mongo -d -p 27017:27017 mongo:4.0
 Start `PLATFORM_EXAMPLE_UI_TESTS` services as follows:
 
 ```bash
-sm --start PLATFORM_EXAMPLE_UI_TESTS -r --wait 100
+sm --start SELF_ASSESSMENT_ASSIST_ALL
 ```
 
 ### Logging
