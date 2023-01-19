@@ -17,8 +17,8 @@
 package uk.gov.hmrc.perftests.auth
 
 import io.gatling.core.Predef._
-import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
+import io.gatling.http.request.builder.HttpRequestBuilder
 import org.joda.time.DateTime
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.perftests.Common._
@@ -29,56 +29,34 @@ object AuthLoginApiRequests extends ServicesConfiguration {
   val baseUrlAuthLoginApi: String = baseUrlFor("auth-login-api")
   val authLoginApiUrl: String     = s"$baseUrlAuthLoginApi/government-gateway/session/login"
 
-  val insertAuthRecordOrganisation: ChainBuilder = exec(
+  val insertAuthRecordOrganisation: HttpRequestBuilder =
     http("Insert Auth Record Organisation")
       .post(authLoginApiUrl)
       .body(StringBody(authPayload(Organisation)))
       .headers(Map("Content-Type" -> "application/json"))
       .check(status is 201)
       .check(header("Authorization").saveAs("bearerToken"))
-  )
 
-  val insertAuthRecordAgent: ChainBuilder = exec(
+  val insertAuthRecordAgent: HttpRequestBuilder =
     http("Insert Auth Record Agent")
       .post(authLoginApiUrl)
       .body(StringBody(authPayload(Agent)))
       .headers(Map("Content-Type" -> "application/json"))
       .check(status is 201)
       .check(header("Authorization").saveAs("bearerToken"))
-  )
 
-  val insertAuthRecordIndividual: ChainBuilder = exec(
+  val insertAuthRecordIndividual: HttpRequestBuilder =
     http("Insert Auth Record Agent")
       .post(authLoginApiUrl)
       .body(StringBody(authPayload(Individual)))
       .headers(Map("Content-Type" -> "application/json"))
       .check(status is 201)
       .check(header("Authorization").saveAs("bearerToken"))
-  )
 
-  def authPayload(affinityGroup: String): String = {
+  private def authPayload(affinityGroup: String): String = {
     val credentialRole      = if (affinityGroup == Agent) "Admin" else "User"
     val enrolments          = if (affinityGroup == Agent) "[]" else mtdSaEnrolment
     val delegatedEnrolments = if (affinityGroup == Agent) mtdSaDelegatedEnrolment else "[]"
-
-    def createAuthToken = {
-      val stringBody =
-        s"""
-         | {
-         |  "credId": "123456789",
-         |  "affinityGroup": "Individual",
-         |  "confidenceLevel": 200,
-         |  "credentialStrength": "strong",
-         |  "nino": "AA000000B",
-         |  "enrolments": []
-         | }""".stripMargin
-
-      http("Create auth token")
-        .post(authLoginApiUrl)
-        .body(StringBody(stringBody))
-        .asJson
-        .check(status.is(201))
-    }
 
     val authPayload =
       s"""
@@ -108,7 +86,6 @@ object AuthLoginApiRequests extends ServicesConfiguration {
          | }
      """.stripMargin
 
-    println("\n" + affinityGroup + ":\n" + authPayload + "\n")
     authPayload
   }
 
