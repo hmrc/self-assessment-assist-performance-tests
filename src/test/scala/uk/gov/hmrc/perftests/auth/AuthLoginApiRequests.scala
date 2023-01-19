@@ -27,26 +27,58 @@ import uk.gov.hmrc.perftests.RandomDataGenerator._
 object AuthLoginApiRequests extends ServicesConfiguration {
 
   val baseUrlAuthLoginApi: String = baseUrlFor("auth-login-api")
-  val authLoginApiUrl: String = s"$baseUrlAuthLoginApi/government-gateway/session/login"
+  val authLoginApiUrl: String     = s"$baseUrlAuthLoginApi/government-gateway/session/login"
 
-  val insertAuthRecordOrganisation: ChainBuilder = exec(http("Insert Auth Record Organisation")
-    .post(authLoginApiUrl)
-    .body(StringBody(authPayload(Organisation)))
-    .headers(Map("Content-Type" -> "application/json"))
-    .check(status is 201)
-    .check(header("Authorization").saveAs("bearerToken")))
+  val insertAuthRecordOrganisation: ChainBuilder = exec(
+    http("Insert Auth Record Organisation")
+      .post(authLoginApiUrl)
+      .body(StringBody(authPayload(Organisation)))
+      .headers(Map("Content-Type" -> "application/json"))
+      .check(status is 201)
+      .check(header("Authorization").saveAs("bearerToken"))
+  )
 
-  val insertAuthRecordAgent: ChainBuilder = exec(http ("Insert Auth Record Agent")
-    .post(authLoginApiUrl)
-    .body(StringBody(authPayload(Agent)))
-    .headers(Map("Content-Type" -> "application/json"))
-    .check(status is 201)
-    .check(header("Authorization").saveAs("bearerToken")))
+  val insertAuthRecordAgent: ChainBuilder = exec(
+    http("Insert Auth Record Agent")
+      .post(authLoginApiUrl)
+      .body(StringBody(authPayload(Agent)))
+      .headers(Map("Content-Type" -> "application/json"))
+      .check(status is 201)
+      .check(header("Authorization").saveAs("bearerToken"))
+  )
+
+  val insertAuthRecordIndividual: ChainBuilder = exec(
+    http("Insert Auth Record Agent")
+      .post(authLoginApiUrl)
+      .body(StringBody(authPayload(Individual)))
+      .headers(Map("Content-Type" -> "application/json"))
+      .check(status is 201)
+      .check(header("Authorization").saveAs("bearerToken"))
+  )
 
   def authPayload(affinityGroup: String): String = {
-    val credentialRole = if (affinityGroup == Agent) "Admin" else "User"
-    val enrolments = if (affinityGroup == Agent) "[]" else mtdSaEnrolment
+    val credentialRole      = if (affinityGroup == Agent) "Admin" else "User"
+    val enrolments          = if (affinityGroup == Agent) "[]" else mtdSaEnrolment
     val delegatedEnrolments = if (affinityGroup == Agent) mtdSaDelegatedEnrolment else "[]"
+
+    def createAuthToken = {
+      val stringBody =
+        s"""
+         | {
+         |  "credId": "123456789",
+         |  "affinityGroup": "Individual",
+         |  "confidenceLevel": 200,
+         |  "credentialStrength": "strong",
+         |  "nino": "AA000000B",
+         |  "enrolments": []
+         | }""".stripMargin
+
+      http("Create auth token")
+        .post(authLoginApiUrl)
+        .body(StringBody(stringBody))
+        .asJson
+        .check(status.is(201))
+    }
 
     val authPayload =
       s"""
@@ -76,7 +108,7 @@ object AuthLoginApiRequests extends ServicesConfiguration {
          | }
      """.stripMargin
 
-    // println("\n"+affinityGroup+":\n"+authPayload+"\n")
+    println("\n" + affinityGroup + ":\n" + authPayload + "\n")
     authPayload
   }
 
@@ -125,5 +157,4 @@ object AuthLoginApiRequests extends ServicesConfiguration {
        |      "countryCode": "UK"
        |    }
        |  } """.stripMargin
-
 }
