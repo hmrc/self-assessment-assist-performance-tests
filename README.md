@@ -11,7 +11,7 @@ Performance test suite for the `SELF-ASSESSEMENT-ASSIST`, using [performance-tes
 Start Mongo Docker container as follows:
 
 ```bash
-docker run --rm -d --name mongo -d -p 27017:27017 mongo:4.0
+docker run --rm -d --name psmdb -d -p 27017:27017 percona/percona-server-mongodb:4.2
 ```
 
 To run services required for the test locally, execute:
