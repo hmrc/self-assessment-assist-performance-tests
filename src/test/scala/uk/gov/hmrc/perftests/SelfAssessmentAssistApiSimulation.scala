@@ -17,13 +17,21 @@
 package uk.gov.hmrc.perftests
 
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
-import uk.gov.hmrc.perftests.auth.AuthLoginApiRequests
+import uk.gov.hmrc.perftests.requests.Setup.curlInsertNino
+import uk.gov.hmrc.perftests.requests.{AuthLoginApiRequests, ReportRequests}
 
 class SelfAssessmentAssistApiSimulation extends PerformanceTestRunner {
 
+  before {
+    curlInsertNino
+  }
+
   setup("login-individual", "auth-login-api-individual").withRequests(AuthLoginApiRequests.insertAuthRecordIndividual)
-  setup("login-organisation", "auth-login-api-organisation").withRequests(AuthLoginApiRequests.insertAuthRecordOrganisation)
-  setup("login-agent", "auth-login-api-agent").withRequests(AuthLoginApiRequests.insertAuthRecordAgent)
+
+//  setup("login-agent", "auth-login-api-agent").withRequests(AuthLoginApiRequests.insertAuthRecordAgent)
+
+  setup("generate-report", "generate-report").withRequests(ReportRequests.generateReport("1.0"))
+  setup("acknowledge-report", "acknowledge-report").withRequests(ReportRequests.acknowledgeReport("1.0"))
 
   runSimulation()
 

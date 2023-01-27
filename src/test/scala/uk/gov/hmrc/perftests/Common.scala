@@ -16,16 +16,16 @@
 
 package uk.gov.hmrc.perftests
 
-import uk.gov.hmrc.performance.conf.ServicesConfiguration
+object Common {
 
-object Common extends ServicesConfiguration {
+  val validMtdItId: String = "XFIT00618912478"
+  val validNino: String = "NJ070957A"
+  val validNinoWithoutSuffix: String = "NJ070957"
 
-  val baseUrlAuthLoginApi: String = baseUrlFor("auth-login-api")
-  val baseUrlSaSelfAssessment: String = baseUrlFor("self-assessment-assist")
+  val validReportId: String =  "a365c0b4-06e3-4fef-a555-16fd0877dc7c"
+  val correlationId: String =  "a5fht738957jfjf845jgjf855"
 
-  val Individual: String = "Individual"
-  val Organisation: String = "Organisation"
-  val Agent: String = "Agent"
+  val calculationId: String = "111190b4-06e3-4fef-a555-6fd0877dc7ca"
 
   val commonHeaders: Map[String, String] =
     Map("Accept" -> s"application/vnd.hmrc.1.0+json",
