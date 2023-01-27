@@ -25,7 +25,7 @@ import uk.gov.hmrc.perftests.Common
 
 object Setup extends ServicesConfiguration {
 
-  private val desStubBaseUrl = baseUrlFor("des-auth-stub")
+  private val desStubBaseUrl = baseUrlFor("auth-des-stub")
   private def insertNinoUrl(nino: String) = s"$desStubBaseUrl/pay-as-you-earn/02.00.00/individuals/$nino"
 
   private def insertNinoPayload(nino: String): String =

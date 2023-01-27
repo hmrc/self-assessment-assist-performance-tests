@@ -20,6 +20,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
+import uk.gov.hmrc.perftests.AffinityGroup
 import uk.gov.hmrc.perftests.Common.{calculationId, correlationId, validNino, validReportId}
 
 object ReportRequests extends ServicesConfiguration {
@@ -28,21 +29,26 @@ object ReportRequests extends ServicesConfiguration {
   private val generateReportUrl: String = s"$selfAssessmentBaseUrl/reports/$validNino/2021-22/$calculationId"
   private val acknowledgeReportUrl: String = s"$selfAssessmentBaseUrl/reports/acknowledge/$validNino/$validReportId/$correlationId"
 
-  def generateReport(apiVersion: String = "1.0"): HttpRequestBuilder =
+  private def bearerToken(bearerTokenFor: AffinityGroup.Value): String = bearerTokenFor match {
+    case uk.gov.hmrc.perftests.AffinityGroup.Individual => s"$${bearerToken}"
+    case uk.gov.hmrc.perftests.AffinityGroup.Agent => s"$${agentBearerToken}"
+  }
+
+  def generateReport(apiVersion: String = "1.0", affinityGroup: AffinityGroup.Value): HttpRequestBuilder =
     http("Generate report")
       .post(generateReportUrl)
       .headers(Map("Content-Type" -> "application/json"))
-      .headers(Map("Authorization" -> s"$${bearerToken}"))
+      .headers(Map("Authorization" -> bearerToken(affinityGroup)))
       .headers(Map("Accept" -> s"application/vnd.hmrc.$apiVersion+json"))
       .check(status is 200)
       .check(substring("reportId"))
 
 
-  def acknowledgeReport(apiVersion: String = "1.0"): HttpRequestBuilder =
+  def acknowledgeReport(apiVersion: String = "1.0", affinityGroup: AffinityGroup.Value): HttpRequestBuilder =
     http("Acknowledge report")
       .post(acknowledgeReportUrl)
       .headers(Map("Content-Type" -> "application/json"))
-      .headers(Map("Authorization" -> s"$${bearerToken}"))
+      .headers(Map("Authorization" -> bearerToken(affinityGroup)))
       .headers(Map("Accept" -> s"application/vnd.hmrc.$apiVersion+json"))
       .check(status is 204)
 

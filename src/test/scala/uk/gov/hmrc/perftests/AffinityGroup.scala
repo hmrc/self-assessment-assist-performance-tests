@@ -18,6 +18,5 @@ package uk.gov.hmrc.perftests
 
 object AffinityGroup extends Enumeration {
   val Individual: AffinityGroup.Value = Value("individual")
-  val Organisation: AffinityGroup.Value = Value("Organisation")
   val Agent: AffinityGroup.Value = Value("Agent")
 }

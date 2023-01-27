@@ -27,11 +27,12 @@ class SelfAssessmentAssistApiSimulation extends PerformanceTestRunner {
   }
 
   setup("login-individual", "auth-login-api-individual").withRequests(AuthLoginApiRequests.insertAuthRecordIndividual)
+  setup("login-agent", "auth-login-api-agent").withRequests(AuthLoginApiRequests.insertAuthRecordAgent)
 
-//  setup("login-agent", "auth-login-api-agent").withRequests(AuthLoginApiRequests.insertAuthRecordAgent)
-
-  setup("generate-report", "generate-report").withRequests(ReportRequests.generateReport("1.0"))
-  setup("acknowledge-report", "acknowledge-report").withRequests(ReportRequests.acknowledgeReport("1.0"))
+  setup("generate-report", "generate-report").withRequests(ReportRequests.generateReport("1.0", AffinityGroup.Individual))
+  setup("generate-report-as-agent", "generate-report").withRequests(ReportRequests.generateReport("1.0", AffinityGroup.Agent))
+  setup("acknowledge-report", "acknowledge-report as agent").withRequests(ReportRequests.acknowledgeReport("1.0", AffinityGroup.Individual))
+  setup("acknowledge-report-as-agent", "acknowledge-report as agent").withRequests(ReportRequests.acknowledgeReport("1.0", AffinityGroup.Agent))
 
   runSimulation()
 

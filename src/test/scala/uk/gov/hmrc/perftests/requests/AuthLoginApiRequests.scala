@@ -28,13 +28,13 @@ object AuthLoginApiRequests extends ServicesConfiguration {
   private val baseUrlAuthLoginApi: String = baseUrlFor("auth-login-api")
   private val authLoginApiUrl: String     = s"$baseUrlAuthLoginApi/government-gateway/session/login"
 
-//  val insertAuthRecordAgent: HttpRequestBuilder =
-//    http("Login Auth Agent")
-//      .post(authLoginApiUrl)
-//      .body(StringBody(authPayload(Agent)))
-//      .headers(Map("Content-Type" -> "application/json"))
-//      .check(status is 201)
-//      .check(header("Authorization").saveAs("bearerToken"))
+  val insertAuthRecordAgent: HttpRequestBuilder =
+    http("Login Auth Agent")
+      .post(authLoginApiUrl)
+      .body(StringBody(agentAuthPayload))
+      .headers(Map("Content-Type" -> "application/json"))
+      .check(status is 201)
+      .check(header("Authorization").saveAs("agentBearerToken"))
 
   val insertAuthRecordIndividual: HttpRequestBuilder =
     http("Login Auth Individual")
@@ -57,6 +57,21 @@ object AuthLoginApiRequests extends ServicesConfiguration {
   """.stripMargin
   }
 
+  private def agentAuthPayload: String = {
+    s"""
+       | {
+       |  "confidenceLevel": 200,
+       |  "nino": "$validNino",
+       |  "credentialRole": "User",
+       |  "affinityGroup": "Agent",
+       |  "credentialStrength": "strong",
+       |  "credId": "${randomAlphanumeric(16)}",
+       |  "enrolments": $agentServicesEnrolment,
+       |  "delegatedEnrolments": ${mtdSaDelegatedEnrolment(validMtdItId)}
+       |}
+     """.stripMargin
+  }
+
   private def mtdSaEnrolment(mtditid: String): String =
     s"""
        |[
@@ -73,14 +88,30 @@ object AuthLoginApiRequests extends ServicesConfiguration {
        |]
      """.stripMargin
 
-  private lazy val mtdSaDelegatedEnrolment: String =
+  private def agentServicesEnrolment: String =
+    s"""
+       |[
+       |  {
+       |    "key": "HMRC-AS-AGENT",
+       |    "identifiers": [
+       |      {
+       |        "key": "AgentReferenceNumber",
+       |        "value": "1234567"
+       |      }
+       |    ],
+       |    "state": "Activated"
+       |  }
+       |]
+       |""".stripMargin
+
+  private def mtdSaDelegatedEnrolment(mtditid: String): String =
     s""" [
        |    {
        |      "key": "HMRC-MTD-IT",
        |      "identifiers": [
        |        {
        |          "key": "MTDITID",
-       |           "value": "$${mtditid}"
+       |           "value": "${mtditid}"
        |        }
        |      ],
        |      "delegatedAuthRule": "mtd-it-auth"
