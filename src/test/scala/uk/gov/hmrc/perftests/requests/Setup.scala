@@ -76,7 +76,7 @@ object Setup extends ServicesConfiguration {
        |}
       """.stripMargin
 
-  val insertNino: HttpRequestBuilder = http("Insert nino")
+  def insertNino: HttpRequestBuilder = http("Insert nino")
     .post(insertNinoUrl(Common.validNinoWithoutSuffix))
     .body(StringBody(insertNinoPayload(Common.validNinoWithoutSuffix)))
     .headers(
@@ -86,10 +86,10 @@ object Setup extends ServicesConfiguration {
   def curlInsertNino: Unit = {
     import sys.process._
 
-    val command: Seq[String] = Seq("curl", "-f", "-X", "POST",
+    val command: Seq[String] = Seq("curl", "-v", "-X", "POST",
       "-H", "Content-Type: application/json",
       insertNinoUrl(Common.validNinoWithoutSuffix),
-      "-d", Json.stringify(Json.toJson(insertNinoPayload(Common.validNinoWithoutSuffix)))
+      "--data-raw", insertNinoPayload(Common.validNinoWithoutSuffix)
     )
 
     try {

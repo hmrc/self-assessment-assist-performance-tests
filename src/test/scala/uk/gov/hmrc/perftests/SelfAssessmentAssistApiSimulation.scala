@@ -18,7 +18,7 @@ package uk.gov.hmrc.perftests
 
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 import uk.gov.hmrc.perftests.requests.Setup.curlInsertNino
-import uk.gov.hmrc.perftests.requests.{AuthLoginApiRequests, ReportRequests}
+import uk.gov.hmrc.perftests.requests.{AuthLoginApiRequests, ReportRequests, Setup}
 
 class SelfAssessmentAssistApiSimulation extends PerformanceTestRunner {
 
@@ -28,6 +28,7 @@ class SelfAssessmentAssistApiSimulation extends PerformanceTestRunner {
 
   setup("login-individual", "auth-login-api-individual").withRequests(AuthLoginApiRequests.insertAuthRecordIndividual)
   setup("login-agent", "auth-login-api-agent").withRequests(AuthLoginApiRequests.insertAuthRecordAgent)
+//  setup("insert-nino", "insert-nino").withRequests(Setup.insertNino)
 
   setup("generate-report", "generate-report").withRequests(ReportRequests.generateReport("1.0", AffinityGroup.Individual))
   setup("generate-report-as-agent", "generate-report").withRequests(ReportRequests.generateReport("1.0", AffinityGroup.Agent))
