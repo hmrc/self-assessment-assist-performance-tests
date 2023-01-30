@@ -6,31 +6,33 @@ Performance test suite for the `SELF-ASSESSEMENT-ASSIST`, using [performance-tes
 
 ## Pre-requisites
 
-### Services
+### Starting services
 
 Start Mongo Docker container as follows:
 
 ```bash
-docker run --rm -d --name mongo -d -p 27017:27017 mongo:4.0
+docker run --rm -d --name psmdb -d -p 27017:27017 percona/percona-server-mongodb:4.2
 ```
 
-Start `PLATFORM_EXAMPLE_UI_TESTS` services as follows:
-
-```bash
-sm --start SELF_ASSESSMENT_ASSIST_ALL
+To run services required for the test locally, execute:
+```
+./run-services.sh
+```
+or, if using sm2:
+```
+./run-services.sh sm2
 ```
 
-### Logging
-
-The default log level for all HTTP requests is set to `WARN`. Configure [logback.xml](src/test/resources/logback.xml) to update this if required.
-
-### WARNING :warning:
-
-Do **NOT** run a full performance test against staging from your local machine. Please [implement a new performance test job](https://confluence.tools.tax.service.gov.uk/display/DTRG/Practical+guide+to+performance+testing+a+digital+service#Practicalguidetoperformancetestingadigitalservice-SettingupabuildonJenkinstorunagainsttheStagingenvironment) and execute your job from the dashboard in [Performance Jenkins](https://performance.tools.staging.tax.service.gov.uk).
-
-## Tests
+## Running tests
 
 Run smoke test (locally) as follows:
+
+```bash
+./local-perf-tests.sh
+```
+
+alternatively:
+
 
 ```bash
 sbt -Dperftest.runSmokeTest=true -DrunLocal=true gatling:test
@@ -47,6 +49,11 @@ Run smoke test (staging) as follows:
 ```bash
 sbt -Dperftest.runSmokeTest=true -DrunLocal=false gatling:test
 ```
+
+### Logging
+
+The default log level for all HTTP requests is set to `WARN`. Configure [logback.xml](src/test/resources/logback.xml) to update this if required.
+
 
 ## Scalafmt
 
