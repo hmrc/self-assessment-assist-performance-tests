@@ -32,7 +32,7 @@ object AuthLoginApiRequests extends ServicesConfiguration {
     http("Login Auth Agent")
       .post(authLoginApiUrl)
       .body(StringBody(agentAuthPayload))
-      .headers(Map("Content-Type" -> "application/json"))
+      .headers(Map("content-type" -> "application/json"))
       .check(status is 201)
       .check(header("Authorization").saveAs("agentBearerToken"))
 
@@ -40,7 +40,7 @@ object AuthLoginApiRequests extends ServicesConfiguration {
     http("Login Auth Individual")
       .post(authLoginApiUrl)
       .body(StringBody(individualAuthPayload))
-      .headers(Map("Content-Type" -> "application/json"))
+      .headers(Map("content-type" -> "application/json"))
       .check(status is 201)
       .check(header("Authorization").saveAs("bearerToken"))
 

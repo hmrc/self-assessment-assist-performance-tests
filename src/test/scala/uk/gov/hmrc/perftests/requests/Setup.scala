@@ -80,14 +80,14 @@ object Setup extends ServicesConfiguration {
     .post(insertNinoUrl(Common.validNinoWithoutSuffix))
     .body(StringBody(insertNinoPayload(Common.validNinoWithoutSuffix)))
     .headers(
-      Map("Content-Type" -> "application/json")
+      Map("content-type" -> "application/json")
     )
 
   def curlInsertNino: Unit = {
     import sys.process._
 
     val command: Seq[String] = Seq("curl", "-v", "-X", "POST",
-      "-H", "Content-Type: application/json",
+      "-H", "content-type: application/json",
       insertNinoUrl(Common.validNinoWithoutSuffix),
       "--data-raw", insertNinoPayload(Common.validNinoWithoutSuffix)
     )

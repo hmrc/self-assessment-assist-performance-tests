@@ -37,9 +37,9 @@ object ReportRequests extends ServicesConfiguration {
   def generateReport(apiVersion: String = "1.0", affinityGroup: AffinityGroup.Value): HttpRequestBuilder =
     http("Generate report")
       .post(generateReportUrl)
-      .headers(Map("Content-Type" -> "application/json"))
+      .headers(Map("content-type" -> "application/json"))
       .headers(Map("Authorization" -> bearerToken(affinityGroup)))
-      .headers(Map("Accept" -> s"application/vnd.hmrc.$apiVersion+json"))
+      .headers(Map("accept" -> s"application/vnd.hmrc.$apiVersion+json"))
       .check(status is 200)
       .check(substring("reportId"))
 
@@ -47,9 +47,9 @@ object ReportRequests extends ServicesConfiguration {
   def acknowledgeReport(apiVersion: String = "1.0", affinityGroup: AffinityGroup.Value): HttpRequestBuilder =
     http("Acknowledge report")
       .post(acknowledgeReportUrl)
-      .headers(Map("Content-Type" -> "application/json"))
+      .headers(Map("content-type" -> "application/json"))
       .headers(Map("Authorization" -> bearerToken(affinityGroup)))
-      .headers(Map("Accept" -> s"application/vnd.hmrc.$apiVersion+json"))
+      .headers(Map("accept" -> s"application/vnd.hmrc.$apiVersion+json"))
       .check(status is 204)
 
 }
