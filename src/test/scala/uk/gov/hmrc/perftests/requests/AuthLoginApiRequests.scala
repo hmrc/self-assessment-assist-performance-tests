@@ -32,17 +32,17 @@ object AuthLoginApiRequests extends ServicesConfiguration {
     http("Login Auth Agent")
       .post(authLoginApiUrl)
       .body(StringBody(agentAuthPayload))
-      .headers(Map("content-type" -> "application/json"))
+      .headers(Map(HttpHeaderNames.ContentType -> HttpHeaderValues.ApplicationJson))
       .check(status is 201)
-      .check(header("Authorization").saveAs("agentBearerToken"))
+      .check(header(HttpHeaderNames.Authorization).saveAs("agentBearerToken"))
 
   val insertAuthRecordIndividual: HttpRequestBuilder =
     http("Login Auth Individual")
       .post(authLoginApiUrl)
       .body(StringBody(individualAuthPayload))
-      .headers(Map("content-type" -> "application/json"))
+      .headers(Map(HttpHeaderNames.ContentType -> HttpHeaderValues.ApplicationJson))
       .check(status is 201)
-      .check(header("Authorization").saveAs("bearerToken"))
+      .check(header(HttpHeaderNames.Authorization).saveAs("bearerToken"))
 
   private def individualAuthPayload: String = {
     s"""
