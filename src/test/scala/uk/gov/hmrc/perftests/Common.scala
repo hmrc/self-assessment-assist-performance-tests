@@ -18,7 +18,7 @@ package uk.gov.hmrc.perftests
 
 object Common {
 
-  val validMtdItId: String = "XFIT00618912478"
+  val validMtdItId: String = "123456789012345"
   val validNino: String = "NJ070957A"
   val validNinoWithoutSuffix: String = "NJ070957"
 
