@@ -17,23 +17,18 @@
 package uk.gov.hmrc.perftests
 
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
-import uk.gov.hmrc.perftests.requests.Setup.curlInsertNino
-import uk.gov.hmrc.perftests.requests.{AuthLoginApiRequests, ReportRequests, Setup}
+import uk.gov.hmrc.perftests.requests.{AuthLoginApiRequests, ReportRequests}
 
 class SelfAssessmentAssistApiSimulation extends PerformanceTestRunner {
 
-//  before {
-//    curlInsertNino
-//  }
-
   setup("login-individual", "auth-login-api-individual").withRequests(AuthLoginApiRequests.insertAuthRecordIndividual)
   setup("login-agent", "auth-login-api-agent").withRequests(AuthLoginApiRequests.insertAuthRecordAgent)
-//  setup("insert-nino", "insert-nino").withRequests(Setup.insertNino)
 
-  setup("generate-report", "generate-report").withRequests(ReportRequests.generateReport("1.0", AffinityGroup.Individual))
-  setup("generate-report-as-agent", "generate-report").withRequests(ReportRequests.generateReport("1.0", AffinityGroup.Agent))
-  setup("acknowledge-report", "acknowledge-report as agent").withRequests(ReportRequests.acknowledgeReport("1.0", AffinityGroup.Individual))
-  setup("acknowledge-report-as-agent", "acknowledge-report as agent").withRequests(ReportRequests.acknowledgeReport("1.0", AffinityGroup.Agent))
+  setup("generate-report", "generate-report-individual").withRequests(ReportRequests.generateReport("1.0", AffinityGroup.Individual))
+  setup("generate-report-as-agent", "generate-report-agent").withRequests(ReportRequests.generateReport("1.0", AffinityGroup.Agent))
+
+  setup("acknowledge-report", "acknowledge-report-individual").withRequests(ReportRequests.acknowledgeReport("1.0", AffinityGroup.Individual))
+  setup("acknowledge-report-as-agent", "acknowledge-report-agent").withRequests(ReportRequests.acknowledgeReport("1.0", AffinityGroup.Agent))
 
   runSimulation()
 
