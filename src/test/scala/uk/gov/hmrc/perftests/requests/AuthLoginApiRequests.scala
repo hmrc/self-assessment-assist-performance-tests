@@ -52,7 +52,22 @@ object AuthLoginApiRequests extends ServicesConfiguration {
        |   "confidenceLevel": 200,
        |   "credentialStrength": "strong",
        |   "nino": "$validNino",
-       |	 "enrolments": ${mtdSaEnrolment(validMtdItId)}
+       |	 "enrolments": ${mtdSaEnrolment(validMtdItId)},
+       |   "itmpData": {
+       |      "givenName": "Lisa",
+       |      "middleName": "Nicole",
+       |      "familyName": "Brennan",
+       |      "birthdate": "1988-01-04",
+       |      "address": {
+       |        "line1": "10 The Causeway",
+       |        "line2": "Little London",
+       |        "line3": "Blackheath",
+       |        "line4": "Surrey",
+       |        "postCode": "GU99 ZBH",
+       |        "countryName": "United Kingdom",
+       |        "countryCode": "GB"
+       |      }
+       |    }
        |}
   """.stripMargin
   }
@@ -67,7 +82,22 @@ object AuthLoginApiRequests extends ServicesConfiguration {
        |  "credentialStrength": "strong",
        |  "credId": "${randomAlphanumeric(16)}",
        |  "enrolments": $agentServicesEnrolment,
-       |  "delegatedEnrolments": ${mtdSaDelegatedEnrolment(validMtdItId)}
+       |  "delegatedEnrolments": ${mtdSaDelegatedEnrolment(validMtdItId)},
+       |  "itmpData": {
+       |      "givenName": "Lisa",
+       |      "middleName": "Nicole",
+       |      "familyName": "Brennan",
+       |      "birthdate": "1988-01-04",
+       |      "address": {
+       |        "line1": "10 The Causeway",
+       |        "line2": "Little London",
+       |        "line3": "Blackheath",
+       |        "line4": "Surrey",
+       |        "postCode": "GU99 ZBH",
+       |        "countryName": "United Kingdom",
+       |        "countryCode": "GB"
+       |      }
+       |    }
        |}
      """.stripMargin
   }
@@ -105,7 +135,7 @@ object AuthLoginApiRequests extends ServicesConfiguration {
        |""".stripMargin
 
   private def mtdSaDelegatedEnrolment(mtditid: String): String =
-    s""" [
+    s"""[
        |    {
        |      "key": "HMRC-MTD-IT",
        |      "identifiers": [
@@ -116,6 +146,7 @@ object AuthLoginApiRequests extends ServicesConfiguration {
        |      ],
        |      "delegatedAuthRule": "mtd-it-auth"
        |    }
-       |  ] """.stripMargin
+       | ]
+       | """.stripMargin
 
 }
