@@ -2,13 +2,10 @@ import sbt._
 
 object Dependencies {
 
-  private val gatlingVersion = "3.4.2"
+  val test: Seq[ModuleID] = Seq(
+    "uk.gov.hmrc"          %% "performance-test-runner"   % "6.1.0",
+    "org.apache.commons"    % "commons-lang3"             % "3.17.0",
+    "com.typesafe"          % "config"                    % "1.4.3"
+  ).map(_ % Test)
 
-  val test = Seq(
-    "com.typesafe"          % "config"                    % "1.3.1"        % Test,
-    "uk.gov.hmrc"          %% "performance-test-runner"   % "5.4.0"        % Test,
-    "io.gatling"            % "gatling-test-framework"    % gatlingVersion % Test,
-    "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % Test,
-    "org.apache.commons"    % "commons-lang3"             % "3.12.0"       % Test
-  )
 }

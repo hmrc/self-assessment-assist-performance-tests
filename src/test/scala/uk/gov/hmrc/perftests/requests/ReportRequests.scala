@@ -30,8 +30,9 @@ object ReportRequests extends ServicesConfiguration {
   private val acknowledgeReportUrl: String = s"$selfAssessmentBaseUrl/reports/acknowledge/$validNino/$validReportId/$correlationId"
 
   private def bearerToken(bearerTokenFor: AffinityGroup.Value): String = bearerTokenFor match {
-    case uk.gov.hmrc.perftests.AffinityGroup.Individual => s"$${bearerToken}"
-    case uk.gov.hmrc.perftests.AffinityGroup.Agent => s"$${agentBearerToken}"
+    case AffinityGroup.Individual => s"$${bearerToken}"
+    case AffinityGroup.Agent      => s"$${agentBearerToken}"
+    case _ => throw new IllegalArgumentException(s"Unsupported AffinityGroup: $bearerTokenFor")
   }
 
   def generateReport(apiVersion: String = "1.0", affinityGroup: AffinityGroup.Value): HttpRequestBuilder =
