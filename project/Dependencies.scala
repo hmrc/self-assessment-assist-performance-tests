@@ -2,7 +2,7 @@ import sbt._
 
 object Dependencies {
 
-  private val gatlingVersion = "3.9.1"
+  private val gatlingVersion = "3.4.2"
 
   val test = Seq(
     "com.typesafe"          % "config"                    % "1.3.1"        % Test,
