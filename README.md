@@ -1,5 +1,3 @@
-**This is a template README.md.  Be sure to update this with project specific content that describes your performance test project.**
-
 # self-assessment-assist-performance-tests
 
 Performance test suite for the `SELF-ASSESSEMENT-ASSIST`, using [performance-test-runner](https://github.com/hmrc/performance-test-runner) under the hood.

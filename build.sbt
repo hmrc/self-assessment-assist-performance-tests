@@ -3,7 +3,7 @@ lazy val root = (project in file("."))
   .settings(
       name         := "self-assessment-assist-performance-tests",
       version      := "0.1.0-SNAPSHOT",
-      scalaVersion := "2.13.14",
+      scalaVersion := "2.13.16",
       // -feature surfaces warning when advanced features are used without being enabled.
       // -language:implicitConversions", "-language:postfixOps are recommended by Gatling
       scalacOptions ++= Seq("-Xfatal-warnings", "-feature", "-language:implicitConversions", "-language:postfixOps"),
