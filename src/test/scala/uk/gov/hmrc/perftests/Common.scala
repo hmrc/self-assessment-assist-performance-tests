@@ -29,7 +29,7 @@ object Common {
 
   val commonHeaders: Map[String, String] =
     Map("Accept" -> s"application/vnd.hmrc.1.0+json",
-      "Authorization" -> s"$${bearerToken}",
+      "Authorization" -> s"#{bearerToken}",
       "Content-Type" -> "application/json")
 
   val headersInsolvent: Map[String, String] =
