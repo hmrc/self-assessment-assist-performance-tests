@@ -22,8 +22,8 @@ object Common {
   val validNino: String = "NJ070957A"
   val validNinoWithoutSuffix: String = "NJ070957"
 
-  val validReportId: String =  "a365c0b4-06e3-4fef-a555-16fd0877dc7c"
-  val correlationId: String =  "a5fht738957jfjf845jgjf855"
+  val validReportId: String =  "a465c0b4-06e3-4fef-a555-16fd0877dc7c"
+  val correlationId: String =  "g5fht738957jfjf845jgjf855"
 
   val calculationId: String = "111190b4-06e3-4fef-a555-6fd0877dc7ca"
 
